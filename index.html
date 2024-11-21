@@ -5,33 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adventskalender</title>
   <style>
-    /* Hintergrundbild */
+    /* Allgemeines Layout */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: url('images/background.jpg') no-repeat center center;
-      background-size: cover; /* Hintergrundbild skalieren */
-      overflow: hidden; /* Kein Scrollen */
+      width: 100%;
+      background-color: #f5f5f5; /* Helle Hintergrundfarbe */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Überschrift */
+    .title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #b22222; /* Gleiche rote Farbe wie die Türchenbeschriftung */
     }
 
     /* Kalender */
     .calendar {
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 4 Spalten */
-      gap: 5px;
-      width: 95%; /* Breite des Kalenders */
-      height: 90vh; /* Dynamische Höhe: 90% des sichtbaren Bereichs */
-      margin: auto; /* Zentriert den Kalender */
+      gap: 5px; /* Abstand zwischen Türchen */
+      width: 90vw; /* Breite des Kalenders */
+      height: 90vh; /* Höhe des Kalenders */
+      max-width: 400px; /* Maximale Breite */
+      max-height: 700px; /* Maximale Höhe */
+      background-color: #b22222; /* Warme rote Farbe für den Kalenderhintergrund */
+      border-radius: 10px; /* Abgerundete Ecken */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */
+      padding: 10px; /* Abstand um die Türchen herum */
     }
 
     /* Türchen */
     .door {
       position: relative;
-      background: rgba(0, 0, 0, 0.7); /* Dunkle Türchen */
-      color: white;
-      border: 2px solid white;
-      font-size: calc(1.5vw + 0.5vh); /* Dynamische Schriftgröße */
+      background: white; /* Weiße Türchen */
+      color: #b22222; /* Dunkelrote Zahlen */
+      border: 2px solid #b22222; /* Dunkelrote Umrandung */
+      font-size: 1.5vw; /* Dynamische Schriftgröße */
       font-weight: bold;
       display: flex;
       justify-content: center;
@@ -78,11 +96,6 @@
       border-radius: 5px;
     }
 
-    .door.big {
-      grid-column: span 2; /* Breite über zwei Spalten */
-      grid-row: span 2; /* Höhe über zwei Reihen */
-    }
-
     /* Modal */
     .modal {
       display: none;
@@ -106,24 +119,24 @@
       max-height: 90%;
     }
 
-    /* Optimierung für kleine Bildschirme */
+    /* Responsive Optimierung für kleinere Geräte */
     @media (max-width: 480px) {
       .calendar {
-        grid-template-columns: repeat(4, 1fr); /* 4 Spalten bleiben */
+        grid-template-columns: repeat(3, 1fr); /* 3 Spalten bei kleinen Bildschirmen */
         gap: 4px;
       }
 
       .door {
-        font-size: calc(1.2vw + 1vh); /* Kleinere Schrift auf schmalen Geräten */
-      }
-
-      .door.big {
-        grid-column: span 2; /* Tür 24 über zwei Spalten */
+        font-size: 3vw; /* Kleinere Schrift auf schmalen Geräten */
       }
     }
   </style>
 </head>
 <body>
+  <!-- Überschrift -->
+  <div class="title">DAS ALLES MÖCHTE ICH MIT DIR MACHEN</div>
+
+  <!-- Kalender -->
   <div class="calendar" id="calendar">
     <!-- Türchen werden dynamisch generiert -->
   </div>
@@ -142,17 +155,14 @@
     const modalImage = document.getElementById('modalImage');
     const doorSound = document.getElementById('doorSound');
 
-    // Simulierte Startzeit: 11:45 Uhr
+    // Startzeit: 16:30 Uhr
     const simulationStart = new Date();
-    simulationStart.setHours(11, 45, 0, 0);
+    simulationStart.setHours(16, 30, 0, 0);
 
     // Türchen generieren
     for (let i = 1; i <= 24; i++) {
       const door = document.createElement('div');
       door.classList.add('door');
-      if (i === 24) {
-        door.classList.add('big'); // Tür 24 doppelt so groß
-      }
 
       door.innerHTML = `
         <div class="front">${i}</div>
