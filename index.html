@@ -11,7 +11,7 @@
       padding: 0;
       height: 100%;
       background: url('images/background.jpg') no-repeat center center;
-      background-size: cover; /* Bild vollständig sichtbar */
+      background-size: cover; /* Hintergrundbild skalieren */
       overflow: hidden; /* Kein Scrollen */
     }
 
@@ -20,25 +20,23 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 4 Spalten */
       gap: 5px;
-      width: 90%; /* Passt sich an die Bildschirmbreite an */
-      max-width: 400px;
-      height: 90%; /* Dynamische Höhe */
-      max-height: 90vh; /* Begrenzt die Höhe auf 90% des Bildschirms */
-      margin: auto;
+      width: 95%; /* Breite des Kalenders */
+      height: 90vh; /* Dynamische Höhe: 90% des sichtbaren Bereichs */
+      margin: auto; /* Zentriert den Kalender */
     }
 
     /* Türchen */
     .door {
       position: relative;
-      aspect-ratio: 1; /* Quadratische Türchen */
       background: rgba(0, 0, 0, 0.7); /* Dunkle Türchen */
       color: white;
       border: 2px solid white;
-      font-size: 1rem;
+      font-size: calc(1.5vw + 0.5vh); /* Dynamische Schriftgröße */
       font-weight: bold;
       display: flex;
       justify-content: center;
       align-items: center;
+      aspect-ratio: 1; /* Quadratische Türchen */
       cursor: pointer;
       opacity: 0.5; /* Deaktivierte Türchen */
       pointer-events: none;
@@ -96,7 +94,7 @@
       background: rgba(0, 0, 0, 0.8);
       justify-content: center;
       align-items: center;
-      z-index: 10; /* Modal immer im Vordergrund */
+      z-index: 10; /* Modal im Vordergrund */
     }
 
     .modal.show {
@@ -111,24 +109,16 @@
     /* Optimierung für kleine Bildschirme */
     @media (max-width: 480px) {
       .calendar {
-        grid-template-columns: repeat(3, 1fr); /* 3 Spalten bei kleinen Bildschirmen */
+        grid-template-columns: repeat(4, 1fr); /* 4 Spalten bleiben */
         gap: 4px;
       }
 
       .door {
-        font-size: 0.9rem; /* Kleinere Schrift */
+        font-size: calc(1.2vw + 1vh); /* Kleinere Schrift auf schmalen Geräten */
       }
 
       .door.big {
-        grid-column: span 3; /* Tür 24 über alle 3 Spalten */
-      }
-    }
-
-    /* Speziell für iPhone-Ansicht */
-    @media screen and (max-device-width: 480px) {
-      html, body {
-        background: url('images/background.jpg') no-repeat center center fixed;
-        background-size: cover;
+        grid-column: span 2; /* Tür 24 über zwei Spalten */
       }
     }
   </style>
