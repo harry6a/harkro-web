@@ -29,26 +29,30 @@
     }
 
     /* Kalender */
+    .calendar-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background-color: #b22222; /* Warme rote Hintergrundfarbe */
+    }
+
     .calendar {
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 4 Spalten */
       gap: 5px; /* Abstand zwischen Türchen */
-      width: 90vw; /* Breite des Kalenders */
-      height: 90vh; /* Höhe des Kalenders */
+      width: 90%; /* Breite des Kalenders */
       max-width: 400px; /* Maximale Breite */
-      max-height: 700px; /* Maximale Höhe */
-      background-color: #b22222; /* Warme rote Farbe für den Kalenderhintergrund */
+      background-color: #b22222; /* Warme rote Hintergrundfarbe */
       border-radius: 10px; /* Abgerundete Ecken */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sanfter Schatten */
       padding: 10px; /* Abstand um die Türchen herum */
     }
 
     /* Türchen */
     .door {
       position: relative;
-      background: white; /* Weiße Türchen */
-      color: #b22222; /* Dunkelrote Zahlen */
-      border: 2px solid #b22222; /* Dunkelrote Umrandung */
+      background: url('images/door.jpeg') no-repeat center center; /* Bild für geschlossene Tür */
+      background-size: cover; /* Bild vollständig einpassen */
+      color: white; /* Weiße Zahlen */
       font-size: 1.5vw; /* Dynamische Schriftgröße */
       font-weight: bold;
       display: flex;
@@ -56,21 +60,34 @@
       align-items: center;
       aspect-ratio: 1; /* Quadratische Türchen */
       cursor: pointer;
-      opacity: 0.5; /* Deaktivierte Türchen */
+      opacity: 0.8; /* Deaktivierte Türchen */
       pointer-events: none;
       border-radius: 5px;
+      border: 2px solid #b22222; /* Dunkelrote Umrandung */
     }
 
     .door.active {
-      opacity: 1;
-      pointer-events: auto; /* Türchen aktiv */
+      opacity: 1; /* Türchen werden aktiviert */
+      pointer-events: auto; /* Türchen können angeklickt werden */
     }
 
     .door.open .front {
       display: none; /* Vorderseite verschwindet */
     }
 
-    .door .front,
+    .door .front {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2; /* Vorderseite sichtbar */
+      color: white; /* Zahl sichtbar */
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
     .door .back {
       position: absolute;
       width: 100%;
@@ -78,15 +95,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .door .back {
-      display: none; /* Rückseite unsichtbar */
-      background: rgba(255, 255, 255, 0.9);
+      z-index: 1; /* Rückseite unter der Vorderseite */
+      background: white; /* Weiße Rückseite */
+      display: none; /* Rückseite anfangs unsichtbar */
+      border-radius: 5px;
     }
 
     .door.open .back {
-      display: flex; /* Rückseite sichtbar */
+      display: flex; /* Rückseite sichtbar, wenn Türchen geöffnet */
     }
 
     .door .back img {
@@ -121,9 +137,14 @@
 
     /* Responsive Optimierung für kleinere Geräte */
     @media (max-width: 480px) {
+      .calendar-wrapper {
+        justify-content: flex-start; /* Kalender beginnt oben */
+      }
+
       .calendar {
         grid-template-columns: repeat(3, 1fr); /* 3 Spalten bei kleinen Bildschirmen */
         gap: 4px;
+        width: 95%; /* Mehr Breite auf kleinen Geräten */
       }
 
       .door {
@@ -136,9 +157,11 @@
   <!-- Überschrift -->
   <div class="title">DAS ALLES MÖCHTE ICH MIT DIR MACHEN</div>
 
-  <!-- Kalender -->
-  <div class="calendar" id="calendar">
-    <!-- Türchen werden dynamisch generiert -->
+  <!-- Kalender-Wrapper -->
+  <div class="calendar-wrapper">
+    <div class="calendar" id="calendar">
+      <!-- Türchen werden dynamisch generiert -->
+    </div>
   </div>
 
   <!-- Modal -->
@@ -147,7 +170,7 @@
   </div>
 
   <!-- Audio -->
-  <audio id="doorSound" src="images/kling.mp3"></audio>
+  <audio id="doorSound"></audio>
 
   <script>
     const calendar = document.getElementById('calendar');
@@ -155,9 +178,9 @@
     const modalImage = document.getElementById('modalImage');
     const doorSound = document.getElementById('doorSound');
 
-    // Startzeit: 16:30 Uhr
+    // Startzeit: heute um 0:50 Uhr
     const simulationStart = new Date();
-    simulationStart.setHours(16, 30, 0, 0);
+    simulationStart.setHours(0, 50, 0, 0);
 
     // Türchen generieren
     for (let i = 1; i <= 24; i++) {
@@ -171,7 +194,7 @@
 
       // Zeitaktivierung für jedes Türchen
       const unlockTime = new Date(simulationStart);
-      unlockTime.setMinutes(simulationStart.getMinutes() + (i - 1) * 5); // Alle 5 Minuten ein Türchen
+      unlockTime.setMinutes(simulationStart.getMinutes() + (i - 1)); // Alle 1 Minute ein Türchen
       const checkUnlock = () => {
         const now = new Date();
         if (now >= unlockTime) {
@@ -185,6 +208,9 @@
           if (!door.classList.contains('open')) {
             // Tür öffnen
             door.classList.add('open');
+
+            // Passende MP3-Datei laden und abspielen
+            doorSound.src = `sounds/kling${i}.mp3`;
             doorSound.currentTime = 0;
             doorSound.play();
           }
