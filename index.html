@@ -14,37 +14,37 @@
       background-color: #f5f5f5; /* Helle Hintergrundfarbe */
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start; /* Inhalt beginnt oben */
       align-items: center;
       font-family: Arial, sans-serif;
+      overflow-x: hidden; /* Verhindert horizontales Scrollen */
     }
 
     /* Überschrift */
     .title {
       font-size: 1.5rem;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin: 10px 0; /* Abstand nach oben und unten */
       text-align: center;
       color: #b22222; /* Gleiche rote Farbe wie die Türchenbeschriftung */
     }
 
-    /* Kalender */
+    /* Kalender-Wrapper */
     .calendar-wrapper {
       width: 100%;
-      display: flex;
-      justify-content: center;
+      max-width: 400px;
       background-color: #b22222; /* Warme rote Hintergrundfarbe */
+      border-radius: 10px;
+      padding: 10px;
+      box-sizing: border-box; /* Innenabstände berücksichtigen */
+      overflow-y: auto; /* Ermöglicht vertikales Scrollen */
     }
 
     .calendar {
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 4 Spalten */
       gap: 5px; /* Abstand zwischen Türchen */
-      width: 90%; /* Breite des Kalenders */
-      max-width: 400px; /* Maximale Breite */
-      background-color: #b22222; /* Warme rote Hintergrundfarbe */
-      border-radius: 10px; /* Abgerundete Ecken */
-      padding: 10px; /* Abstand um die Türchen herum */
+      width: 100%; /* Kalender passt sich dem Wrapper an */
     }
 
     /* Türchen */
@@ -138,13 +138,13 @@
     /* Responsive Optimierung für kleinere Geräte */
     @media (max-width: 480px) {
       .calendar-wrapper {
-        justify-content: flex-start; /* Kalender beginnt oben */
+        max-height: calc(100vh - 60px); /* Platz für die Überschrift */
+        overflow-y: auto; /* Scrollen bei kleinen Bildschirmen */
       }
 
       .calendar {
         grid-template-columns: repeat(3, 1fr); /* 3 Spalten bei kleinen Bildschirmen */
         gap: 4px;
-        width: 95%; /* Mehr Breite auf kleinen Geräten */
       }
 
       .door {
