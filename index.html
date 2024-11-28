@@ -178,9 +178,10 @@
     const modalImage = document.getElementById('modalImage');
     const doorSound = document.getElementById('doorSound');
 
-    // Startzeit: heute um 0:50 Uhr
+    // Startzeit: 1. Dezember um 5:00 Uhr
     const simulationStart = new Date();
-    simulationStart.setHours(0, 50, 0, 0);
+    simulationStart.setFullYear(new Date().getFullYear(), 11, 1); // 1. Dezember
+    simulationStart.setHours(5, 0, 0, 0); // 5:00 Uhr
 
     // Türchen generieren
     for (let i = 1; i <= 24; i++) {
@@ -194,7 +195,7 @@
 
       // Zeitaktivierung für jedes Türchen
       const unlockTime = new Date(simulationStart);
-      unlockTime.setMinutes(simulationStart.getMinutes() + (i - 1)); // Alle 1 Minute ein Türchen
+      unlockTime.setDate(simulationStart.getDate() + (i - 1)); // Jedes Türchen 24 Stunden später
       const checkUnlock = () => {
         const now = new Date();
         if (now >= unlockTime) {
